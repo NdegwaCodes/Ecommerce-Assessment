@@ -66,6 +66,8 @@ server:
   port: 8080
 
 application:
+  demo-data:
+    enabled: ${DEMO_DATA:false}
   client-base-url: ${CLIENT_BASE_URL:http://localhost:4200}
   cors:
     allowed-origins: ${CLIENT_BASE_URL:http://localhost:4200}

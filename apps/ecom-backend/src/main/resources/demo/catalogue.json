@@ -1,0 +1,143 @@
+{
+  "categories": [
+    "Solar panels",
+    "Batteries",
+    "Inverters",
+    "Lighting",
+    "Kits and pumps"
+  ],
+  "products": [
+    {
+      "picture": "demo/products/panel-450.svg",
+      "name": "Mono Solar Panel 450 W",
+      "brand": "Mwangaza",
+      "category": "Solar panels",
+      "price": 18500,
+      "wattage": 450,
+      "warrantyYears": 25,
+      "featured": true,
+      "stock": 40,
+      "description": "A 450 W monocrystalline panel with an anodised aluminium frame. A good building block for rooftop systems on homes, shops and schools."
+    },
+    {
+      "picture": "demo/products/panel-200.svg",
+      "name": "Mono Solar Panel 200 W",
+      "brand": "Mwangaza",
+      "category": "Solar panels",
+      "price": 9800,
+      "wattage": 200,
+      "warrantyYears": 25,
+      "featured": false,
+      "stock": 60,
+      "description": "A 200 W monocrystalline panel for smaller homes and off-grid cabins. Pairs well with a 12 V battery and charge controller."
+    },
+    {
+      "picture": "demo/products/folding-panel.svg",
+      "name": "Portable Folding Panel 100 W",
+      "brand": "Savanna Power",
+      "category": "Solar panels",
+      "price": 12900,
+      "wattage": 100,
+      "warrantyYears": 2,
+      "featured": true,
+      "stock": 25,
+      "description": "A 100 W folding panel with a carry handle and USB outputs. Charges power stations, phones and lanterns on the road or at camp."
+    },
+    {
+      "picture": "demo/products/lithium-battery.svg",
+      "name": "Lithium Battery 2.4 kWh",
+      "brand": "Savanna Power",
+      "category": "Batteries",
+      "price": 145000,
+      "wattage": 2400,
+      "warrantyYears": 10,
+      "featured": true,
+      "stock": 12,
+      "description": "A 24 V, 100 Ah lithium iron phosphate battery with a built-in management system and a charge gauge. Rated for thousands of cycles."
+    },
+    {
+      "picture": "demo/products/gel-battery.svg",
+      "name": "Gel Deep-Cycle Battery 12 V 200 Ah",
+      "brand": "Mwangaza",
+      "category": "Batteries",
+      "price": 42000,
+      "wattage": 1200,
+      "warrantyYears": 3,
+      "featured": false,
+      "stock": 20,
+      "description": "A sealed, maintenance-free gel battery for solar storage. A dependable choice for lighting, TV and small appliances overnight."
+    },
+    {
+      "picture": "demo/products/hybrid-inverter.svg",
+      "name": "Hybrid Inverter 5 kW",
+      "brand": "Savanna Power",
+      "category": "Inverters",
+      "price": 98000,
+      "wattage": 5000,
+      "warrantyYears": 5,
+      "featured": true,
+      "stock": 8,
+      "description": "A 5 kW hybrid inverter with a built-in MPPT charge controller. Runs a whole home from solar, battery and grid, switching automatically."
+    },
+    {
+      "picture": "demo/products/sine-inverter.svg",
+      "name": "Pure Sine Wave Inverter 1 kW",
+      "brand": "Mwangaza",
+      "category": "Inverters",
+      "price": 21500,
+      "wattage": 1000,
+      "warrantyYears": 2,
+      "featured": false,
+      "stock": 30,
+      "description": "A 1 kW pure sine wave inverter that turns 12 V battery power into clean 240 V for TVs, laptops, fridges and routers."
+    },
+    {
+      "picture": "demo/products/street-light.svg",
+      "name": "All-in-One Solar Street Light 100 W",
+      "brand": "Savanna Power",
+      "category": "Lighting",
+      "price": 8900,
+      "wattage": 100,
+      "warrantyYears": 2,
+      "featured": true,
+      "stock": 50,
+      "description": "A street light with its own panel, battery and motion sensor. Lights compounds, driveways and paths from dusk to dawn with no wiring."
+    },
+    {
+      "picture": "demo/products/lantern.svg",
+      "name": "Solar Lantern with USB Charging",
+      "brand": "Mwangaza",
+      "category": "Lighting",
+      "price": 2400,
+      "wattage": 5,
+      "warrantyYears": 1,
+      "featured": false,
+      "stock": 120,
+      "description": "A bright, rechargeable lantern with three brightness levels and a USB port to charge a phone. Up to 30 hours on its lowest setting."
+    },
+    {
+      "picture": "demo/products/home-kit.svg",
+      "name": "Home Solar Kit 300 W",
+      "brand": "Mwangaza",
+      "category": "Kits and pumps",
+      "price": 39500,
+      "wattage": 300,
+      "warrantyYears": 2,
+      "featured": true,
+      "stock": 15,
+      "description": "Everything a small home needs to start on solar: a 300 W panel, a lithium power box, four LED bulbs and the cables to connect them."
+    },
+    {
+      "picture": "demo/products/water-pump.svg",
+      "name": "Solar Water Pump 750 W",
+      "brand": "Savanna Power",
+      "category": "Kits and pumps",
+      "price": 64000,
+      "wattage": 750,
+      "warrantyYears": 2,
+      "featured": false,
+      "stock": 6,
+      "description": "A 750 W surface pump driven straight from solar panels. Lifts water from shallow wells and tanks for irrigation and livestock."
+    }
+  ]
+}

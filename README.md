@@ -15,7 +15,8 @@ The project started from the CodeCake Angular and Spring Boot e-commerce tutoria
 - **A solar product model.** Clothing size and colour are replaced by power rating (watts) and warranty (years), from the domain value objects through JPA, a Liquibase migration, the REST API and the admin form. The catalogue filter works on power bands (up to 100 W, 100 to 500 W, 500 W to 2 kW, over 2 kW).
 - **Kenyan shillings throughout.** Prices display as KSh, and Stripe now charges in KES. It previously charged in euros while the shop showed dollars.
 - **Brand and storefront.** New name, colours, home page and footer, and the removal of placeholder copy such as a fake "was" price on every product and an email confirmation the app never sent.
-- **Restored and tested the workspace.** One buildable Nx workspace with configuration from environment variables. 30 frontend tests (Jest), backend unit tests for the Daraja helpers and order totals (JUnit), and CI that boots the API against PostgreSQL.
+- **A sample catalogue.** Eleven solar products in five categories with realistic Kenyan prices and illustrations I drew for the store, loaded on first start when `DEMO_DATA=true`.
+- **Restored and tested the workspace.** One buildable Nx workspace with configuration from environment variables. 30 frontend tests (Jest), backend tests for the Daraja helpers, order totals and the sample catalogue (JUnit), and CI that boots the API against PostgreSQL.
 
 ## How M-Pesa checkout works
 
@@ -87,6 +88,7 @@ Set these environment variables, then start the API. Spring Boot starts PostgreS
 | `MPESA_CALLBACK_TOKEN` | a long random string |
 | `MPESA_ENV` | `sandbox` (default) or `production` |
 | `STRIPE_API_KEY`, `STRIPE_WEBHOOK_SECRET` | your Stripe test keys, the secret from `stripe listen --forward-to localhost:8080/api/orders/webhook` |
+| `DEMO_DATA` | `true` to load the sample catalogue (11 products in 5 categories) into an empty store |
 
 M-Pesa is optional: without its variables the store runs and the M-Pesa button explains that it is unavailable.
 
