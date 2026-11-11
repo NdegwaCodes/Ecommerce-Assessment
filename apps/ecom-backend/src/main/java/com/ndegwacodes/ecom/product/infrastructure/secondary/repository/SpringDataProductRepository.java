@@ -84,9 +84,9 @@ public class SpringDataProductRepository implements ProductRepository {
   }
 
   @Override
-  public Page<Product> findByCategoryAndSize(Pageable pageable, FilterQuery filterQuery) {
-    return jpaProductRepository.findByCategoryPublicIdAndSizesIn(
-      pageable, filterQuery.categoryId().value(), filterQuery.sizes()
+  public Page<Product> findByCategoryAndWattage(Pageable pageable, FilterQuery filterQuery) {
+    return jpaProductRepository.findByCategoryPublicIdAndWattageBetween(
+      pageable, filterQuery.categoryId().value(), filterQuery.minWattage(), filterQuery.maxWattage()
     ).map(ProductEntity::to);
   }
 

@@ -14,5 +14,7 @@
   <include file="/db/changelog/00000000000002_product_category.xml" relativeToChangelogFile="false"/>
   <include file="/db/changelog/00000000000003_product.xml" relativeToChangelogFile="false"/>
   <include file="/db/changelog/00000000000004_order.xml" relativeToChangelogFile="false"/>
+  <include file="/db/changelog/00000000000005_solar_products.xml" relativeToChangelogFile="false"/>
+  <include file="/db/changelog/00000000000006_mpesa_payments.xml" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>

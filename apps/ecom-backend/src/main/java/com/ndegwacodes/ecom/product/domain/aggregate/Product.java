@@ -11,11 +11,11 @@ import java.util.UUID;
 public class Product {
 
   private final ProductBrand productBrand;
-  private final ProductColor color;
+  private final ProductWarranty warranty;
   private final ProductDescription description;
   private final ProductName name;
   private final ProductPrice price;
-  private final ProductSize size;
+  private final ProductWattage wattage;
   private final Category category;
   private final List<Picture> pictures;
   private Long dbId;
@@ -23,13 +23,13 @@ public class Product {
   private PublicId publicId;
   private int nbInStock;
 
-  public Product(ProductBrand productBrand, ProductColor color, ProductDescription description, ProductName name, ProductPrice price, ProductSize size, Category category, List<Picture> pictures, Long dbId, boolean featured, PublicId publicId, int nbInStock) {
+  public Product(ProductBrand productBrand, ProductWarranty warranty, ProductDescription description, ProductName name, ProductPrice price, ProductWattage wattage, Category category, List<Picture> pictures, Long dbId, boolean featured, PublicId publicId, int nbInStock) {
     this.productBrand = productBrand;
-    this.color = color;
+    this.warranty = warranty;
     this.description = description;
     this.name = name;
     this.price = price;
-    this.size = size;
+    this.wattage = wattage;
     this.category = category;
     this.pictures = pictures;
     this.dbId = dbId;
@@ -39,21 +39,21 @@ public class Product {
   }
 
   private void assertMandatoryFields(ProductBrand brand,
-                                     ProductColor color,
+                                     ProductWarranty warranty,
                                      ProductDescription description,
                                      ProductName name,
                                      ProductPrice price,
-                                     ProductSize size,
+                                     ProductWattage wattage,
                                      Category category,
                                      List<Picture> pictures,
                                      boolean featured,
                                      int nbInStock) {
     Assert.notNull("brand", brand);
-    Assert.notNull("color", color);
+    Assert.notNull("warranty", warranty);
     Assert.notNull("description", description);
     Assert.notNull("name", name);
     Assert.notNull("price", price);
-    Assert.notNull("size", size);
+    Assert.notNull("wattage", wattage);
     Assert.notNull("category", category);
     Assert.notNull("pictures", pictures);
     Assert.notNull("featured", featured);
@@ -68,8 +68,8 @@ public class Product {
     return productBrand;
   }
 
-  public ProductColor getColor() {
-    return color;
+  public ProductWarranty getWarranty() {
+    return warranty;
   }
 
   public ProductDescription getDescription() {
@@ -84,8 +84,8 @@ public class Product {
     return price;
   }
 
-  public ProductSize getSize() {
-    return size;
+  public ProductWattage getWattage() {
+    return wattage;
   }
 
   public Category getCategory() {

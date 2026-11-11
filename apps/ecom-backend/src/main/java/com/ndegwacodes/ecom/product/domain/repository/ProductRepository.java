@@ -24,7 +24,7 @@ public interface ProductRepository {
 
   Page<Product> findByCategoryExcludingOne(Pageable pageable, PublicId categoryPublicId, PublicId productPublicId);
 
-  Page<Product> findByCategoryAndSize(Pageable pageable, FilterQuery filterQuery);
+  Page<Product> findByCategoryAndWattage(Pageable pageable, FilterQuery filterQuery);
 
   List<Product> findByPublicIds(List<PublicId> publicIds);
 

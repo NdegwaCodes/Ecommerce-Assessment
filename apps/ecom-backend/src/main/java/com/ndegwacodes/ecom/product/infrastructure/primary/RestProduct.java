@@ -12,11 +12,11 @@ import java.util.UUID;
 public class RestProduct {
 
   private String brand;
-  private String color;
+  private int warrantyYears;
   private String description;
   private String name;
   private double price;
-  private ProductSize size;
+  private int wattage;
   private RestCategory category;
   private boolean featured;
   private List<RestPicture> pictures;
@@ -26,16 +26,16 @@ public class RestProduct {
   public RestProduct() {
   }
 
-  public RestProduct(String brand, String color, String description,
-                     String name, double price, ProductSize size,
+  public RestProduct(String brand, int warrantyYears, String description,
+                     String name, double price, int wattage,
                      RestCategory category, boolean featured,
                      List<RestPicture> pictures, UUID publicId, int nbInStock) {
     this.brand = brand;
-    this.color = color;
+    this.warrantyYears = warrantyYears;
     this.description = description;
     this.name = name;
     this.price = price;
-    this.size = size;
+    this.wattage = wattage;
     this.category = category;
     this.featured = featured;
     this.pictures = pictures;
@@ -50,11 +50,11 @@ public class RestProduct {
   public static Product toDomain(RestProduct restProduct) {
     ProductBuilder productBuilder = ProductBuilder.product()
       .productBrand(new ProductBrand(restProduct.getBrand()))
-      .color(new ProductColor(restProduct.getColor()))
+      .warranty(new ProductWarranty(restProduct.getWarrantyYears()))
       .description(new ProductDescription(restProduct.getDescription()))
       .name(new ProductName(restProduct.getName()))
       .price(new ProductPrice(restProduct.getPrice()))
-      .size(restProduct.getSize())
+      .wattage(new ProductWattage(restProduct.getWattage()))
       .category(RestCategory.toDomain(restProduct.getCategory()))
       .featured(restProduct.isFeatured())
       .nbInStock(restProduct.getNbInStock());
@@ -73,13 +73,13 @@ public class RestProduct {
   public static RestProduct fromDomain(Product product) {
     return RestProductBuilder.restProduct()
       .brand(product.getProductBrand().value())
-      .color(product.getColor().value())
+      .warrantyYears(product.getWarranty().years())
       .description(product.getDescription().value())
       .name(product.getName().value())
       .price(product.getPrice().value())
       .featured(product.getFeatured())
       .category(RestCategory.fromDomain(product.getCategory()))
-      .size(product.getSize())
+      .wattage(product.getWattage().value())
       .pictures(RestPicture.fromDomain(product.getPictures()))
       .publicId(product.getPublicId().value())
       .nbInStock(product.getNbInStock())
@@ -94,12 +94,12 @@ public class RestProduct {
     this.brand = brand;
   }
 
-  public String getColor() {
-    return color;
+  public int getWarrantyYears() {
+    return warrantyYears;
   }
 
-  public void setColor(String color) {
-    this.color = color;
+  public void setWarrantyYears(int warrantyYears) {
+    this.warrantyYears = warrantyYears;
   }
 
   public String getDescription() {
@@ -126,12 +126,12 @@ public class RestProduct {
     this.price = price;
   }
 
-  public ProductSize getSize() {
-    return size;
+  public int getWattage() {
+    return wattage;
   }
 
-  public void setSize(ProductSize size) {
-    this.size = size;
+  public void setWattage(int wattage) {
+    this.wattage = wattage;
   }
 
   public RestCategory getCategory() {

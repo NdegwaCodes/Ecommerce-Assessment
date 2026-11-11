@@ -1,7 +1,6 @@
 package com.ndegwacodes.ecom.product.infrastructure.secondary.repository;
 
 import com.ndegwacodes.ecom.product.domain.aggregate.Product;
-import com.ndegwacodes.ecom.product.domain.vo.ProductSize;
 import com.ndegwacodes.ecom.product.infrastructure.secondary.entity.ProductEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,9 +22,11 @@ public interface JpaProductRepository  extends JpaRepository<ProductEntity, Long
 
   Page<ProductEntity> findByCategoryPublicIdAndPublicIdNot(Pageable pageable, UUID categoryPublicId, UUID excludedProductPublicId);
 
-  @Query("SELECT product FROM ProductEntity product WHERE (:sizes is null or product.size IN (:sizes)) AND " +
+  @Query("SELECT product FROM ProductEntity product WHERE (:minWattage is null or product.wattage >= :minWattage) AND " +
+    "(:maxWattage is null or product.wattage <= :maxWattage) AND " +
     "product.category.publicId = :categoryPublicId")
-  Page<ProductEntity> findByCategoryPublicIdAndSizesIn(Pageable pageable, UUID categoryPublicId, List<ProductSize> sizes);
+  Page<ProductEntity> findByCategoryPublicIdAndWattageBetween(Pageable pageable, UUID categoryPublicId,
+                                                               Integer minWattage, Integer maxWattage);
 
   List<ProductEntity> findAllByPublicIdIn(List<UUID> publicIds);
 

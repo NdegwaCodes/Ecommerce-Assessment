@@ -35,6 +35,6 @@ public class ProductShop {
   }
 
   public Page<Product> filter(Pageable pageable, FilterQuery query) {
-    return productRepository.findByCategoryAndSize(pageable, query);
+    return productRepository.findByCategoryAndWattage(pageable, query);
   }
 }

@@ -27,8 +27,8 @@ public class ProductEntity extends AbstractAuditingEntity<Long> {
   @Column(name = "brand")
   private String brand;
 
-  @Column(name = "color")
-  private String color;
+  @Column(name = "warranty_years")
+  private int warrantyYears;
 
   @Column(name = "description")
   private String description;
@@ -42,9 +42,8 @@ public class ProductEntity extends AbstractAuditingEntity<Long> {
   @Column(name = "featured")
   private boolean featured;
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "size")
-  private ProductSize size;
+  @Column(name = "wattage")
+  private int wattage;
 
   @Column(name = "publicId", unique = true)
   private UUID publicId;
@@ -62,15 +61,15 @@ public class ProductEntity extends AbstractAuditingEntity<Long> {
   public ProductEntity() {
   }
 
-  public ProductEntity(Long id, String brand, String color, String description, String name, double price, boolean featured, ProductSize size, UUID publicId, int nbInStock, Set<PictureEntity> pictures, CategoryEntity category) {
+  public ProductEntity(Long id, String brand, int warrantyYears, String description, String name, double price, boolean featured, int wattage, UUID publicId, int nbInStock, Set<PictureEntity> pictures, CategoryEntity category) {
     this.id = id;
     this.brand = brand;
-    this.color = color;
+    this.warrantyYears = warrantyYears;
     this.description = description;
     this.name = name;
     this.price = price;
     this.featured = featured;
-    this.size = size;
+    this.wattage = wattage;
     this.publicId = publicId;
     this.nbInStock = nbInStock;
     this.pictures = pictures;
@@ -86,11 +85,11 @@ public class ProductEntity extends AbstractAuditingEntity<Long> {
 
     return productEntityBuilder
       .brand(product.getProductBrand().value())
-      .color(product.getColor().value())
+      .warrantyYears(product.getWarranty().years())
       .description(product.getDescription().value())
       .name(product.getName().value())
       .price(product.getPrice().value())
-      .size(product.getSize())
+      .wattage(product.getWattage().value())
       .publicId(product.getPublicId().value())
       .category(CategoryEntity.from(product.getCategory()))
       .pictures(PictureEntity.from(product.getPictures()))
@@ -102,11 +101,11 @@ public class ProductEntity extends AbstractAuditingEntity<Long> {
   public static Product to(ProductEntity productEntity) {
     return ProductBuilder.product()
       .productBrand(new ProductBrand(productEntity.getBrand()))
-      .color(new ProductColor(productEntity.getColor()))
+      .warranty(new ProductWarranty(productEntity.getWarrantyYears()))
       .description(new ProductDescription(productEntity.getDescription()))
       .name(new ProductName(productEntity.getName()))
       .price(new ProductPrice(productEntity.getPrice()))
-      .size(productEntity.getSize())
+      .wattage(new ProductWattage(productEntity.getWattage()))
       .publicId(new PublicId(productEntity.getPublicId()))
       .category(CategoryEntity.to(productEntity.getCategory()))
       .pictures(PictureEntity.to(productEntity.getPictures()))
@@ -132,12 +131,12 @@ public class ProductEntity extends AbstractAuditingEntity<Long> {
     this.brand = brand;
   }
 
-  public String getColor() {
-    return color;
+  public int getWarrantyYears() {
+    return warrantyYears;
   }
 
-  public void setColor(String color) {
-    this.color = color;
+  public void setWarrantyYears(int warrantyYears) {
+    this.warrantyYears = warrantyYears;
   }
 
   public String getDescription() {
@@ -172,12 +171,12 @@ public class ProductEntity extends AbstractAuditingEntity<Long> {
     this.featured = featured;
   }
 
-  public ProductSize getSize() {
-    return size;
+  public int getWattage() {
+    return wattage;
   }
 
-  public void setSize(ProductSize size) {
-    this.size = size;
+  public void setWattage(int wattage) {
+    this.wattage = wattage;
   }
 
   public UUID getPublicId() {
@@ -216,11 +215,11 @@ public class ProductEntity extends AbstractAuditingEntity<Long> {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof ProductEntity that)) return false;
-    return featured == that.featured && Objects.equals(brand, that.brand) && Objects.equals(color, that.color) && Objects.equals(description, that.description) && Objects.equals(name, that.name) && Objects.equals(price, that.price) && size == that.size && Objects.equals(publicId, that.publicId);
+    return featured == that.featured && Objects.equals(brand, that.brand) && warrantyYears == that.warrantyYears && Objects.equals(description, that.description) && Objects.equals(name, that.name) && Objects.equals(price, that.price) && wattage == that.wattage && Objects.equals(publicId, that.publicId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(brand, color, description, name, price, featured, size, publicId);
+    return Objects.hash(brand, warrantyYears, description, name, price, featured, wattage, publicId);
   }
 }
