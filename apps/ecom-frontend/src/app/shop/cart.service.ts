@@ -1,7 +1,13 @@
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, map, Observable } from 'rxjs';
-import { Cart, CartItemAdd, StripeSession } from './cart.model';
+import {
+  Cart,
+  CartItemAdd,
+  StripeSession,
+  MpesaCheckout,
+  MpesaOrderStatus,
+} from './cart.model';
 import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../environments/environment';
 
@@ -116,6 +122,19 @@ export class CartService {
     return this.http.post<StripeSession>(
       `${environment.apiUrl}/orders/init-payment`,
       cart
+    );
+  }
+
+  payWithMpesa(cart: Array<CartItemAdd>, phoneNumber: string): Observable<MpesaCheckout> {
+    return this.http.post<MpesaCheckout>(`${environment.apiUrl}/orders/mpesa`, {
+      items: cart,
+      phoneNumber,
+    });
+  }
+
+  getMpesaOrder(orderPublicId: string): Observable<MpesaOrderStatus> {
+    return this.http.get<MpesaOrderStatus>(
+      `${environment.apiUrl}/orders/mpesa/${orderPublicId}`
     );
   }
 

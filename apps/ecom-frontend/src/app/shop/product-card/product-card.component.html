@@ -7,13 +7,10 @@
     <div class="p-5 justify-end">
       <div class="text-sm">{{product().brand}}</div>
       <h2 class="card-title w-full truncate">
-        <div class="truncate">{{product().name}} - {{product().size}}</div>
-        <div class="badge badge-secondary">NEW</div>
+        <div class="truncate">{{product().name}}</div>
       </h2>
-      <div>
-        <span class="line-through me-2">{{product().price + 200 | currency}}</span>
-        <span class="me-2">{{product().price | currency}}</span>
-      </div>
+      <div class="text-sm text-gray-500">{{product().wattage}} W · {{product().warrantyYears}}-year warranty</div>
+      <div class="font-bold mt-1">{{product().price | kes }}</div>
     </div>
   </div>
 </a>

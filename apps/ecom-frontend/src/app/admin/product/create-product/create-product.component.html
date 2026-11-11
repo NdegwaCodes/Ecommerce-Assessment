@@ -32,15 +32,15 @@
     </label>
     <label class="form-control w-full">
       <div class="label">
-        <span class="label-text">Color</span>
+        <span class="label-text">Warranty (years)</span>
       </div>
-      <input type="color"
-             class="input input-bordered w-full" formControlName="color"
-             [class.input-error]="color.invalid && !color.untouched" />
+      <input type="number" min="0" max="30"
+             class="input input-bordered w-full" formControlName="warrantyYears"
+             [class.input-error]="warrantyYears.invalid && !warrantyYears.untouched" />
       <div class="label">
         <span class="label-text-alt text-red-600"
-              *ngxControlError="color; track:'required'">
-          Color is required
+              *ngxControlError="warrantyYears; track:'required'">
+          Warranty is required
         </span>
       </div>
     </label>
@@ -88,22 +88,24 @@
     </label>
     <label class="form-control w-full">
       <div class="label">
-        <span class="label-text">Size</span>
+        <span class="label-text">Power rating (watts)</span>
       </div>
-      <select class="select select-bordered w-full" formControlName="size">
-        <option disabled selected>Select size</option>
-        @for (size of sizes; track size) {
-          <option value="{{size}}">{{ size }}</option>
-        }
-      </select>
-      <div class="label"></div>
+      <input type="number" min="1" placeholder="e.g. 450"
+             class="input input-bordered w-full" formControlName="wattage"
+             [class.input-error]="wattage.invalid && !wattage.untouched" />
+      <div class="label">
+        <span class="label-text-alt text-red-600"
+              *ngxControlError="wattage; track:'min'">
+          Enter the rated power in watts
+        </span>
+      </div>
     </label>
     <label class="form-control w-full">
       <div class="label">
         <span class="label-text">Category</span>
       </div>
       <select class="select select-bordered w-full" formControlName="category">
-        <option disabled selected>Select size</option>
+        <option disabled selected>Select category</option>
         @if (categoriesQuery.isSuccess()) {
           @for (category of categoriesQuery.data()!.content; track category.publicId) {
             <option value="{{category.publicId}}+{{category.name}}">{{ category.name }}</option>

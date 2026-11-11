@@ -1,21 +1,37 @@
-import { Component, effect, inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { KesPipe } from '../../shared/kes.pipe';
+import {
+  Component,
+  DestroyRef,
+  effect,
+  inject,
+  OnInit,
+  PLATFORM_ID,
+  signal,
+} from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CartService } from '../cart.service';
 import { Oauth2Service } from '../../auth/oauth2.service';
 import { ToastService } from '../../shared/toast/toast.service';
-import { CartItem, CartItemAdd, StripeSession } from '../cart.model';
+import {
+  CartItem,
+  CartItemAdd,
+  MpesaOrderStatus,
+  StripeSession,
+} from '../cart.model';
 import {
   injectMutation,
   injectQuery,
 } from '@tanstack/angular-query-experimental';
-import { lastValueFrom } from 'rxjs';
-import { RouterLink } from '@angular/router';
+import { lastValueFrom, Subscription, switchMap, takeWhile, timer } from 'rxjs';
+import { Router, RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 import { StripeService } from 'ngx-stripe';
 
 @Component({
   selector: 'ecom-cart',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FormsModule, KesPipe],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
 })
@@ -24,6 +40,14 @@ export class CartComponent implements OnInit {
   oauth2Service = inject(Oauth2Service);
   toastService = inject(ToastService);
   stripeService = inject(StripeService);
+  router = inject(Router);
+  destroyRef = inject(DestroyRef);
+
+  mpesaPhone = '';
+  mpesaWaiting = signal(false);
+  mpesaStarting = signal(false);
+  mpesaMessage = signal<string | null>(null);
+  private mpesaPolling?: Subscription;
 
   cart: Array<CartItem> = [];
 
@@ -103,7 +127,7 @@ export class CartComponent implements OnInit {
     const itemToRemoveIndex = this.cart.findIndex(
       (item) => item.publicId === publicId
     );
-    if (itemToRemoveIndex) {
+    if (itemToRemoveIndex !== -1) {
       this.cart.splice(itemToRemoveIndex, 1);
     }
     this.cartService.removeFromCart(publicId);
@@ -134,6 +158,70 @@ export class CartComponent implements OnInit {
           ({ publicId: item.publicId, quantity: item.quantity } as CartItemAdd)
       );
       this.initPaymentSession.mutate(cartItemsAdd);
+    }
+  }
+
+  payWithMpesa() {
+    if (this.action === 'login') {
+      this.oauth2Service.login();
+      return;
+    }
+    this.mpesaMessage.set(null);
+    this.mpesaStarting.set(true);
+    const items = this.cart.map(
+      (item) => ({ publicId: item.publicId, quantity: item.quantity } as CartItemAdd)
+    );
+    this.cartService.payWithMpesa(items, this.mpesaPhone).subscribe({
+      next: ({ orderPublicId }) => {
+        this.mpesaStarting.set(false);
+        this.cartService.storeSessionId(orderPublicId);
+        this.waitForMpesa(orderPublicId);
+      },
+      error: (error: HttpErrorResponse) => {
+        this.mpesaStarting.set(false);
+        this.mpesaMessage.set(
+          error.error?.message ?? 'Could not start the M-Pesa payment. Try again.'
+        );
+      },
+    });
+  }
+
+  private waitForMpesa(orderPublicId: string) {
+    this.mpesaWaiting.set(true);
+    const startedAt = Date.now();
+    this.mpesaPolling?.unsubscribe();
+    this.mpesaPolling = timer(4000, 4000)
+      .pipe(
+        switchMap(() => this.cartService.getMpesaOrder(orderPublicId)),
+        takeWhile(
+          (order) => order.status === 'PENDING' && Date.now() - startedAt < 120000,
+          true
+        )
+      )
+      .subscribe({
+        next: (order) => this.onMpesaStatus(order, startedAt),
+        error: () => {
+          this.mpesaWaiting.set(false);
+          this.mpesaMessage.set('We lost contact with the payment. Check your orders before paying again.');
+        },
+      });
+    this.destroyRef.onDestroy(() => this.mpesaPolling?.unsubscribe());
+  }
+
+  private onMpesaStatus(order: MpesaOrderStatus, startedAt: number) {
+    if (order.status === 'PAID') {
+      this.mpesaWaiting.set(false);
+      this.router.navigate(['/cart/success'], {
+        queryParams: { session_id: order.orderPublicId, receipt: order.receiptNumber },
+      });
+    } else if (order.status === 'FAILED') {
+      this.mpesaWaiting.set(false);
+      this.mpesaMessage.set('The M-Pesa payment did not go through. You can try again.');
+    } else if (Date.now() - startedAt >= 120000) {
+      this.mpesaWaiting.set(false);
+      this.mpesaMessage.set(
+        'We have not heard back from M-Pesa yet. If you paid, the order will show as paid in your orders.'
+      );
     }
   }
 

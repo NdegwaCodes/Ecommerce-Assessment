@@ -1,3 +1,4 @@
+import { KesPipe } from '../../shared/kes.pipe';
 import { Component, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { injectParams } from 'ngxtension/inject-params';
@@ -15,7 +16,7 @@ import { Product } from '../../admin/model/product.model';
 @Component({
   selector: 'ecom-product-detail',
   standalone: true,
-  imports: [CommonModule, FaIconComponent, ProductCardComponent],
+  imports: [CommonModule, FaIconComponent, ProductCardComponent, KesPipe],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',
 })

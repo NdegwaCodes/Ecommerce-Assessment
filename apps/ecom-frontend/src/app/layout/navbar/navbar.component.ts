@@ -1,3 +1,4 @@
+import { brand } from '../../shared/brand';
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -17,6 +18,7 @@ import { CartService } from '../../shop/cart.service';
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent implements OnInit {
+  protected readonly brand = brand;
   oauth2Service = inject(Oauth2Service);
   productService = inject(UserProductService);
   cartService = inject(CartService);

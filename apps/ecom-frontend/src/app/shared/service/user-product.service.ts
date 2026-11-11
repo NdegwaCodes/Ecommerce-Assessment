@@ -10,6 +10,7 @@ import {
   Product,
   ProductCategory,
   ProductFilter,
+  powerBands,
 } from '../../admin/model/product.model';
 import { environment } from '../../../environments/environment';
 
@@ -60,8 +61,12 @@ export class UserProductService {
     if (productFilter.category) {
       params = params.append('categoryId', productFilter.category);
     }
-    if (productFilter.size) {
-      params = params.append('productSizes', productFilter.size);
+    const band = powerBands.find((b) => b.key === productFilter.power);
+    if (band?.minWattage !== undefined) {
+      params = params.append('minWattage', band.minWattage);
+    }
+    if (band?.maxWattage !== undefined) {
+      params = params.append('maxWattage', band.maxWattage);
     }
     return this.http.get<Page<Product>>(
       `${environment.apiUrl}/products-shop/filter`,

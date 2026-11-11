@@ -24,7 +24,7 @@
           <td>{{computeItemsName(order.orderedItems)}}</td>
           <td>{{order.status}}</td>
           <td>{{computeItemsQuantity(order.orderedItems)}}</td>
-          <td>{{computeTotal(order.orderedItems) | currency}}</td>
+          <td>{{computeTotal(order.orderedItems) | kes }}</td>
         </tr>
       }
       </tbody>

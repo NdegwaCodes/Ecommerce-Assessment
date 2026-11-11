@@ -4,12 +4,11 @@ import {
   FilterProductsFormContent,
   ProductFilter,
   ProductFilterForm,
-  sizes,
+  powerBands,
 } from '../../../admin/model/product.model';
 import {
   FormBuilder,
   FormControl,
-  FormRecord,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -23,13 +22,15 @@ import {
 })
 export class ProductsFilterComponent {
   sort = input<string>('createdDate,asc');
-  size = input<string>();
+  power = input<string>();
 
   productFilter = output<ProductFilter>();
   formBuilder = inject(FormBuilder);
 
+  protected readonly powerBands = powerBands;
+
   constructor() {
-    effect(() => this.updateSizeFormValue());
+    effect(() => this.updatePowerFormValue());
     effect(() => this.updateSortFormValue());
     this.formFilterProducts.valueChanges.subscribe(() =>
       this.onFilterChange(this.formFilterProducts.getRawValue())
@@ -42,58 +43,20 @@ export class ProductsFilterComponent {
         nonNullable: true,
         validators: [Validators.required],
       }),
-      size: this.buildSizeFormControl(),
+      power: new FormControl<string>('', { nonNullable: true }),
     });
 
-  private buildSizeFormControl(): FormRecord<FormControl<boolean>> {
-    const sizeFormControl = this.formBuilder.nonNullable.record<
-      FormControl<boolean>
-    >({});
-    for (const size of sizes) {
-      sizeFormControl.addControl(
-        size,
-        new FormControl<boolean>(false, { nonNullable: true })
-      );
-    }
-    return sizeFormControl;
-  }
-
   private onFilterChange(filter: Partial<ProductFilterForm>) {
-    const filterProduct: ProductFilter = {
-      size: '',
+    this.productFilter.emit({
+      power: filter.power ?? '',
       sort: [`createdDate,${filter.sort}`],
-    };
-
-    let sizes: [string, boolean][] = [];
-    if (filter.size !== undefined) {
-      sizes = Object.entries(filter.size);
-    }
-
-    for (const [sizeKey, sizeValue] of sizes) {
-      if (sizeValue) {
-        if (filterProduct.size?.length === 0) {
-          filterProduct.size = sizeKey;
-        } else {
-          filterProduct.size += `,${sizeKey}`;
-        }
-      }
-    }
-    this.productFilter.emit(filterProduct);
+    });
   }
 
-  public getSizeFormGroup(): FormRecord<FormControl<boolean>> {
-    return this.formFilterProducts.get('size') as FormRecord<
-      FormControl<boolean>
-    >;
-  }
-
-  private updateSizeFormValue() {
-    if (this.size()) {
-      const sizes = this.size()!.split(',');
-      for (const size of sizes) {
-        this.getSizeFormGroup().get(size)!.setValue(true, { emitEvent: false });
-      }
-    }
+  private updatePowerFormValue() {
+    this.formFilterProducts.controls.power.setValue(this.power() ?? '', {
+      emitEvent: false,
+    });
   }
 
   private updateSortFormValue() {
@@ -104,6 +67,4 @@ export class ProductsFilterComponent {
       );
     }
   }
-
-  protected readonly sizes = sizes;
 }

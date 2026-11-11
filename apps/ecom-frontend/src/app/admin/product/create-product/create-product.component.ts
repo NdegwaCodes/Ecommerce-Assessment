@@ -14,8 +14,6 @@ import {
   BaseProduct,
   CreateProductFormContent,
   ProductPicture,
-  ProductSizes,
-  sizes,
 } from '../../model/product.model';
 import {
   injectMutation,
@@ -51,9 +49,9 @@ export class CreateProductComponent {
     nonNullable: true,
     validators: [Validators.required],
   });
-  size = new FormControl<ProductSizes>('XS', {
+  wattage = new FormControl<number>(0, {
     nonNullable: true,
-    validators: [Validators.required],
+    validators: [Validators.required, Validators.min(1)],
   });
   category = new FormControl<string>('', {
     nonNullable: true,
@@ -63,9 +61,9 @@ export class CreateProductComponent {
     nonNullable: true,
     validators: [Validators.required],
   });
-  color = new FormControl<string>('', {
+  warrantyYears = new FormControl<number>(1, {
     nonNullable: true,
-    validators: [Validators.required],
+    validators: [Validators.required, Validators.min(0), Validators.max(30)],
   });
   featured = new FormControl<boolean>(false, {
     nonNullable: true,
@@ -83,11 +81,11 @@ export class CreateProductComponent {
   public createForm =
     this.formBuilder.nonNullable.group<CreateProductFormContent>({
       brand: this.brand,
-      color: this.color,
+      warrantyYears: this.warrantyYears,
       description: this.description,
       name: this.name,
       price: this.price,
-      size: this.size,
+      wattage: this.wattage,
       category: this.category,
       featured: this.featured,
       pictures: this.pictures,
@@ -112,11 +110,11 @@ export class CreateProductComponent {
   create(): void {
     const productToCreate: BaseProduct = {
       brand: this.createForm.getRawValue().brand,
-      color: this.createForm.getRawValue().color,
+      warrantyYears: this.createForm.getRawValue().warrantyYears,
       description: this.createForm.getRawValue().description,
       name: this.createForm.getRawValue().name,
       price: this.createForm.getRawValue().price,
-      size: this.createForm.getRawValue().size,
+      wattage: this.createForm.getRawValue().wattage,
       category: {
         publicId: this.createForm.getRawValue().category.split('+')[0],
         name: this.createForm.getRawValue().category.split('+')[1],
@@ -168,5 +166,4 @@ export class CreateProductComponent {
     this.toastService.show('Issue when creating product', 'ERROR');
   }
 
-  protected readonly sizes = sizes;
 }

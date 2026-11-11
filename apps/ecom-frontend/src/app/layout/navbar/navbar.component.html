@@ -1,8 +1,9 @@
 <div class="navbar bg-base-100">
   <div class="navbar-start">
     <div class="dropdown">
-      <a class="btn btn-ghost text-xl">
-        <div class="border-1 bg-secondary logo p-2 rounded-xl" routerLink="/">EC</div>
+      <a class="btn btn-ghost text-xl gap-2" routerLink="/" aria-label="Home">
+        <fa-icon class="text-primary" [icon]="['fas', 'sun']" size="lg"></fa-icon>
+        <span class="hidden sm:inline font-bold">{{ brand.shortName }}</span>
       </a>
     </div>
   </div>

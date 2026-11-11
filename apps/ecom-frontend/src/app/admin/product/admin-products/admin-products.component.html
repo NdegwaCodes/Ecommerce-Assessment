@@ -21,7 +21,7 @@
         <th></th>
         <th class="min-w-40">Name</th>
         <th>Brand</th>
-        <th>Color</th>
+        <th>Power</th>
         <th>Price</th>
         <th>Nb in stock</th>
         <th>Featured</th>
@@ -38,9 +38,9 @@
             </td>
             <td>{{product.brand}}</td>
             <td>
-              <div class="h-5 w-5 rounded-full" [ngStyle]="{'background-color': product.color}"></div>
+              {{product.wattage}} W
             </td>
-            <td>{{product.price}}</td>
+            <td>{{product.price | kes }}</td>
             <td>{{product.nbInStock}}</td>
             <td>{{product.featured}}</td>
             <td>{{product.category.name}}</td>

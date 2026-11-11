@@ -1,3 +1,4 @@
+import { KesPipe } from '../../shared/kes.pipe';
 import { Component, inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { OrderService } from '../../shared/service/order.service';
@@ -10,7 +11,7 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 @Component({
   selector: 'ecom-user-orders',
   standalone: true,
-  imports: [CommonModule, FaIconComponent],
+  imports: [CommonModule, FaIconComponent, KesPipe],
   templateUrl: './user-orders.component.html',
   styleUrl: './user-orders.component.scss',
 })

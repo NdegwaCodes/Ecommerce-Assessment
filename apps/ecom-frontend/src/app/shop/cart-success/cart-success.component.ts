@@ -13,6 +13,7 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 })
 export class CartSuccessComponent {
   sessionId = injectQueryParams('session_id');
+  receipt = injectQueryParams('receipt');
   cartService = inject(CartService);
 
   isValidAccess = true;

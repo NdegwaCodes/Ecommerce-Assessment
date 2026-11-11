@@ -1,18 +1,45 @@
-<div class="hero min-h-screen rounded-xl"
-style="background-image: url(./home/hero.webp); background-size: cover">
-  <div class="hero-overlay bg-opacity-20"></div>
-  <div class="hero-content justify-start text-neutral-content
-  w-full px-6 sm:px-8 lg:px-10">
-    <div class="text-left">
+<div class="hero min-h-[70vh] rounded-xl bg-gradient-to-br from-amber-300 via-orange-500 to-rose-700 overflow-hidden relative">
+  <svg class="absolute -right-24 -top-24 w-[28rem] h-[28rem] opacity-30" viewBox="0 0 200 200" aria-hidden="true">
+    <circle cx="100" cy="100" r="46" fill="#fff7d6"/>
+    @for (angle of rays; track angle) {
+      <rect x="97" y="18" width="6" height="30" rx="3" fill="#fff7d6" [attr.transform]="'rotate(' + angle + ' 100 100)'"/>
+    }
+  </svg>
+  <div class="hero-content justify-start w-full px-6 sm:px-8 lg:px-10 relative">
+    <div class="text-left max-w-2xl">
       <h1 class="mb-5 text-3xl sm:text-5xl text-white font-bold">
-        Ecommerce app
+        Power your home with the sun
       </h1>
       <p class="mb-5 text-lg sm:text-2xl text-white">
-        Check out our collection of products
+        Solar panels, batteries, inverters and lighting for Kenyan homes and businesses.
+        Pay with M-Pesa or card.
       </p>
-      <button class="btn btn-primary btn-lg" routerLink="/products">
-        Shop collection
+      <button class="btn btn-lg bg-white text-orange-700 border-0 hover:bg-amber-50" routerLink="/products">
+        Shop solar
       </button>
+    </div>
+  </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-10">
+  <div class="flex items-start gap-4 p-5 rounded-xl bg-secondary">
+    <fa-icon class="text-primary" [icon]="['fas', 'mobile-screen']" size="2x"></fa-icon>
+    <div>
+      <div class="font-bold">Pay with M-Pesa</div>
+      <div class="text-sm">Enter your number and approve the prompt on your phone.</div>
+    </div>
+  </div>
+  <div class="flex items-start gap-4 p-5 rounded-xl bg-secondary">
+    <fa-icon class="text-primary" [icon]="['fas', 'solar-panel']" size="2x"></fa-icon>
+    <div>
+      <div class="font-bold">Sized by power</div>
+      <div class="text-sm">Every product lists its rating in watts, so you can match it to your load.</div>
+    </div>
+  </div>
+  <div class="flex items-start gap-4 p-5 rounded-xl bg-secondary">
+    <fa-icon class="text-primary" [icon]="['fas', 'shield-halved']" size="2x"></fa-icon>
+    <div>
+      <div class="font-bold">Warranty shown upfront</div>
+      <div class="text-sm">See how many years each panel, battery or inverter is covered for.</div>
     </div>
   </div>
 </div>

@@ -1,6 +1,6 @@
 <div class="grid grid-cols-[1fr_6fr] gap-5">
   <div class="ms-5">
-    <ecom-products-filter [sort]="sort()!" [size]="size()!" (productFilter)="onFilterChange($event)"></ecom-products-filter>
+    <ecom-products-filter [sort]="sort()!" [power]="power() ?? ''" (productFilter)="onFilterChange($event)"></ecom-products-filter>
   </div>
   @if(filteredProductsQuery.isSuccess() && filteredProductsQuery.data().content.length !== 0) {
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

@@ -1,7 +1,18 @@
-import { FormControl, FormRecord } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
-export type ProductSizes = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL';
-export const sizes: ProductSizes[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+export interface PowerBand {
+  key: string;
+  label: string;
+  minWattage?: number;
+  maxWattage?: number;
+}
+
+export const powerBands: PowerBand[] = [
+  { key: 'small', label: 'Up to 100 W', maxWattage: 100 },
+  { key: 'medium', label: '100 W to 500 W', minWattage: 100, maxWattage: 500 },
+  { key: 'large', label: '500 W to 2 kW', minWattage: 500, maxWattage: 2000 },
+  { key: 'xlarge', label: 'Over 2 kW', minWattage: 2000 },
+];
 
 export interface ProductCategory {
   publicId?: string;
@@ -15,11 +26,11 @@ export interface ProductPicture {
 
 export interface BaseProduct {
   brand: string;
-  color: string;
+  warrantyYears: number;
   description: string;
   name: string;
   price: number;
-  size: ProductSizes;
+  wattage: number;
   category: ProductCategory;
   featured: boolean;
   pictures: ProductPicture[];
@@ -36,11 +47,11 @@ export type CreateCategoryFormContent = {
 
 export type CreateProductFormContent = {
   brand: FormControl<string>;
-  color: FormControl<string>;
+  warrantyYears: FormControl<number>;
   description: FormControl<string>;
   name: FormControl<string>;
   price: FormControl<number>;
-  size: FormControl<ProductSizes>;
+  wattage: FormControl<number>;
   category: FormControl<string>;
   featured: FormControl<boolean>;
   pictures: FormControl<ProductPicture[]>;
@@ -48,19 +59,17 @@ export type CreateProductFormContent = {
 };
 
 export interface ProductFilter {
-  size?: string;
+  power?: string;
   category?: string | null;
   sort: string[];
 }
 
 export type FilterProductsFormContent = {
   sort: FormControl<string>;
-  size: FormRecord<FormControl<boolean>>
+  power: FormControl<string>;
 }
 
 export interface ProductFilterForm {
-  size?: {
-    [size: string]: boolean;
-  } | undefined;
-  sort: string
+  power?: string;
+  sort: string;
 }

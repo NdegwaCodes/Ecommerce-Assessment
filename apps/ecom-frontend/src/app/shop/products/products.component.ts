@@ -20,7 +20,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
 })
 export class ProductsComponent {
   category = injectQueryParams('category');
-  size = injectQueryParams('size');
+  power = injectQueryParams('power');
   sort = injectQueryParams('sort');
   productService = inject(UserProductService);
   router = inject(Router);
@@ -34,7 +34,7 @@ export class ProductsComponent {
 
   filterProducts: ProductFilter = {
     category: this.category(),
-    size: this.size() ? this.size()! : '',
+    power: this.power() ?? '',
     sort: [this.sort() ? this.sort()! : ''],
   };
 
@@ -79,7 +79,7 @@ export class ProductsComponent {
       if (this.lastCategory != this.category() && this.lastCategory !== '') {
         this.filterProducts = {
           category: this.category(),
-          size: this.size() ? this.size()! : '',
+          power: this.power() ?? '',
           sort: [this.sort() ? this.sort()! : ''],
         };
         this.filteredProductsQuery.refetch();

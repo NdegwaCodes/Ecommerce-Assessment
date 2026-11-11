@@ -1,3 +1,4 @@
+import { KesPipe } from '../../../shared/kes.pipe';
 import { Component, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminProductService } from '../../admin-product.service';
@@ -15,7 +16,7 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 @Component({
   selector: 'ecom-admin-products',
   standalone: true,
-  imports: [CommonModule, RouterLink, FaIconComponent],
+  imports: [CommonModule, RouterLink, FaIconComponent, KesPipe],
   templateUrl: './admin-products.component.html',
   styleUrl: './admin-products.component.scss',
 })

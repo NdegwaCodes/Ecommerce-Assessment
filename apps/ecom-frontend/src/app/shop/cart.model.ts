@@ -21,3 +21,16 @@ export interface CartItem {
 export interface StripeSession {
   id: string;
 }
+
+export interface MpesaCheckout {
+  orderPublicId: string;
+}
+
+export type MpesaOrderState = 'PENDING' | 'PAID' | 'FAILED';
+
+export interface MpesaOrderStatus {
+  orderPublicId: string;
+  status: MpesaOrderState;
+  receiptNumber: string | null;
+  amount: number;
+}

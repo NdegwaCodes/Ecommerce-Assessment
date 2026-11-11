@@ -11,7 +11,7 @@
             <div class="w-40">
               <a [routerLink]="['/product', item.publicId]">{{ item.name }}</a>
               <div class="text-sm">{{ item.brand }}</div>
-              <div class="font-bold">{{ item.price | currency }}</div>
+              <div class="font-bold">{{ item.price | kes }}</div>
             </div>
           </div>
           <div class="flex">
@@ -42,23 +42,46 @@
       </div>
     }
   </div>
-  <div class="bg-gray-100 border-gray-400 p-5 w-full lg:w-96 h-72 mt-6 lg:mt-0 rounded-md">
+  <div class="bg-gray-100 border-gray-400 p-5 w-full lg:w-96 mt-6 lg:mt-0 rounded-md">
     <div class="font-bold">Order Summary</div>
     <div class="border-t border-gray-300 my-5"></div>
     <div class="flex justify-between">
       <div>Delivery</div>
-      <div>{{ 0 | currency }}</div>
+      <div>{{ 0 | kes }}</div>
     </div>
     <div class="border-t border-gray-300 my-5"></div>
     <div class="flex justify-between font-bold">
       <div>Total</div>
-      <div>{{ computeTotal() | currency }}</div>
+      <div>{{ computeTotal() | kes }}</div>
     </div>
     <div class="border-t border-gray-300 my-5"></div>
     <button class="btn btn-primary w-full"
             [disabled]="cartQuery.isSuccess() && cartQuery.data()!.products.length === 0"
             (click)="checkout()">
-      {{ labelCheckout }}
+      {{ labelCheckout === 'Checkout' ? 'Pay by card' : labelCheckout }}
     </button>
+    @if (action === 'checkout') {
+      <div class="divider text-sm text-gray-500">or</div>
+      @if (mpesaWaiting()) {
+        <div class="flex items-center gap-3 text-green-700">
+          <span class="loading loading-spinner loading-md"></span>
+          <span>Check your phone and enter your M-Pesa PIN to pay {{ computeTotal() | kes }}.</span>
+        </div>
+      } @else {
+        <label class="form-control w-full">
+          <div class="label"><span class="label-text">M-Pesa phone number</span></div>
+          <input type="tel" inputmode="tel" placeholder="0712 345 678"
+                 class="input input-bordered w-full" [(ngModel)]="mpesaPhone" />
+        </label>
+        <button class="btn w-full mt-3 bg-green-600 hover:bg-green-700 text-white border-0"
+                [disabled]="mpesaStarting() || !mpesaPhone.trim() || cart.length === 0"
+                (click)="payWithMpesa()">
+          {{ mpesaStarting() ? 'Sending request...' : 'Pay with M-Pesa' }}
+        </button>
+      }
+      @if (mpesaMessage()) {
+        <div class="text-sm text-red-600 mt-3">{{ mpesaMessage() }}</div>
+      }
+    }
   </div>
 </div>

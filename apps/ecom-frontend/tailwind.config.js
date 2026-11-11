@@ -27,10 +27,10 @@ module.exports = {
     themes: [
       {
         fantasy: {
-          primary: '#0000ff',
+          primary: '#d97706',
           'primary-content': 'white',
-          secondary: '#F6F6F6',
-          neutral: '#E8E8E8',
+          secondary: '#fff8eb',
+          neutral: '#f1e7d6',
         },
       },
     ],
