@@ -47,6 +47,29 @@ public class SpringDataOrderRepository implements OrderRepository {
   }
 
   @Override
+  public Optional<Order> findByMpesaCheckoutRequestId(String checkoutRequestId) {
+    return jpaOrderRepository.findByMpesaCheckoutRequestId(checkoutRequestId).map(OrderEntity::toDomain);
+  }
+
+  @Override
+  public Optional<Order> findByPublicIdForUser(PublicId orderPublicId, UserPublicId userPublicId) {
+    return jpaOrderRepository.findByPublicIdAndUserPublicId(orderPublicId.value(), userPublicId.value())
+      .map(OrderEntity::toDomain);
+  }
+
+  @Override
+  public boolean updateStatusIfPending(PublicId orderPublicId, OrderStatus newStatus, String mpesaReceiptNumber) {
+    return jpaOrderRepository.updateStatusIfCurrent(orderPublicId.value(), OrderStatus.PENDING,
+      newStatus, mpesaReceiptNumber) == 1;
+  }
+
+  @Override
+  public void attachMpesaReceipt(PublicId orderPublicId, String mpesaReceiptNumber) {
+    jpaOrderRepository.updateStatusIfCurrent(orderPublicId.value(), OrderStatus.PAID,
+      OrderStatus.PAID, mpesaReceiptNumber);
+  }
+
+  @Override
   public Page<Order> findAllByUserPublicId(UserPublicId userPublicId, Pageable pageable) {
     return jpaOrderRepository.findAllByUserPublicId(userPublicId.value(), pageable)
       .map(OrderEntity::toDomain);

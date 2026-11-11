@@ -82,3 +82,14 @@ application:
   stripe:
     api-key: ${STRIPE_API_KEY}
     webhook-secret: ${STRIPE_WEBHOOK_SECRET}
+  mpesa:
+    environment: ${MPESA_ENV:sandbox}
+    consumer-key: ${MPESA_CONSUMER_KEY:}
+    consumer-secret: ${MPESA_CONSUMER_SECRET:}
+    shortcode: ${MPESA_SHORTCODE:}
+    passkey: ${MPESA_PASSKEY:}
+    transaction-type: ${MPESA_TRANSACTION_TYPE:CustomerPayBillOnline}
+    party-b: ${MPESA_PARTY_B:}
+    callback-base-url: ${MPESA_CALLBACK_BASE_URL:}
+    callback-token: ${MPESA_CALLBACK_TOKEN:}
+    account-reference: ${MPESA_ACCOUNT_REFERENCE:MWANGAZA}

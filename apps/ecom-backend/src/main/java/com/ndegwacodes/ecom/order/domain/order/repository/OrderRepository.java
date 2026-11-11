@@ -18,6 +18,14 @@ public interface OrderRepository {
 
   Optional<Order> findByStripeSessionId(StripeSessionInformation stripeSessionInformation);
 
+  Optional<Order> findByMpesaCheckoutRequestId(String checkoutRequestId);
+
+  Optional<Order> findByPublicIdForUser(PublicId orderPublicId, UserPublicId userPublicId);
+
+  boolean updateStatusIfPending(PublicId orderPublicId, OrderStatus newStatus, String mpesaReceiptNumber);
+
+  void attachMpesaReceipt(PublicId orderPublicId, String mpesaReceiptNumber);
+
   Page<Order> findAllByUserPublicId(UserPublicId userPublicId, Pageable pageable);
 
   Page<Order> findAll(Pageable pageable);

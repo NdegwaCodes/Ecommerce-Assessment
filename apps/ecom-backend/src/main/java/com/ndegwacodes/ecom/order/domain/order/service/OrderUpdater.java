@@ -2,6 +2,7 @@ package com.ndegwacodes.ecom.order.domain.order.service;
 
 import com.ndegwacodes.ecom.order.domain.order.aggregate.*;
 import com.ndegwacodes.ecom.order.domain.order.repository.OrderRepository;
+import com.ndegwacodes.ecom.order.domain.order.vo.OrderStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +17,11 @@ public class OrderUpdater {
 
   public List<OrderedProduct> updateOrderFromStripe(StripeSessionInformation stripeSessionInformation) {
     Order order = orderRepository.findByStripeSessionId(stripeSessionInformation).orElseThrow();
-    order.validatePayment();
-    orderRepository.updateStatusByPublicId(order.getStatus(), order.getPublicId());
-    return order.getOrderedProducts();
+    if (!order.isPending()) {
+      return List.of();
+    }
+    boolean updated = orderRepository.updateStatusIfPending(order.getPublicId(), OrderStatus.PAID, null);
+    return updated ? order.getOrderedProducts() : List.of();
   }
 
   public List<OrderProductQuantity> computeQuantity(List<OrderedProduct> orderedProducts) {

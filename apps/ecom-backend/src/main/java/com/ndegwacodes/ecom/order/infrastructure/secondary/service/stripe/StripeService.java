@@ -57,7 +57,7 @@ public class StripeService {
       SessionCreateParams.LineItem.PriceData linePriceData = SessionCreateParams.LineItem.PriceData.builder()
         .setUnitAmountDecimal(BigDecimal.valueOf(Double.valueOf(productDetails.getPrice().value()).longValue() * 100))
         .setProductData(productData)
-        .setCurrency("EUR")
+        .setCurrency("kes")
         .build();
 
       SessionCreateParams.LineItem lineItem = SessionCreateParams.LineItem.builder()

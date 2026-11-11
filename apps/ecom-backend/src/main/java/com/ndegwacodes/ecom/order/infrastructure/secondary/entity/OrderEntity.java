@@ -4,6 +4,7 @@ import com.ndegwacodes.ecom.order.domain.order.aggregate.Order;
 import com.ndegwacodes.ecom.order.domain.order.aggregate.OrderBuilder;
 import com.ndegwacodes.ecom.order.domain.order.aggregate.OrderedProduct;
 import com.ndegwacodes.ecom.order.domain.order.vo.OrderStatus;
+import com.ndegwacodes.ecom.order.domain.order.vo.PaymentMethod;
 import com.ndegwacodes.ecom.product.domain.vo.PublicId;
 import com.ndegwacodes.ecom.shared.jpa.AbstractAuditingEntity;
 import jakarta.persistence.*;
@@ -30,8 +31,21 @@ public class OrderEntity extends AbstractAuditingEntity<Long> {
   @Column(name = "status", nullable = false)
   private OrderStatus status;
 
-  @Column(name = "stripe_session_id", nullable = false)
+  @Column(name = "stripe_session_id")
   private String stripeSessionId;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "payment_method", nullable = false)
+  private PaymentMethod paymentMethod;
+
+  @Column(name = "mpesa_checkout_request_id", unique = true)
+  private String mpesaCheckoutRequestId;
+
+  @Column(name = "mpesa_receipt_number")
+  private String mpesaReceiptNumber;
+
+  @Column(name = "mpesa_phone_number")
+  private String mpesaPhoneNumber;
 
   @OneToMany(mappedBy = "id.order", cascade = CascadeType.REMOVE)
   private Set<OrderedProductEntity> orderedProducts = new HashSet<>();
@@ -44,11 +58,17 @@ public class OrderEntity extends AbstractAuditingEntity<Long> {
   }
 
   public OrderEntity(Long id, UUID publicId, OrderStatus status, String stripeSessionId,
+                     PaymentMethod paymentMethod, String mpesaCheckoutRequestId,
+                     String mpesaReceiptNumber, String mpesaPhoneNumber,
                      Set<OrderedProductEntity> orderedProducts, UserEntity user) {
     this.id = id;
     this.publicId = publicId;
     this.status = status;
     this.stripeSessionId = stripeSessionId;
+    this.paymentMethod = paymentMethod;
+    this.mpesaCheckoutRequestId = mpesaCheckoutRequestId;
+    this.mpesaReceiptNumber = mpesaReceiptNumber;
+    this.mpesaPhoneNumber = mpesaPhoneNumber;
     this.orderedProducts = orderedProducts;
     this.user = user;
   }
@@ -61,6 +81,10 @@ public class OrderEntity extends AbstractAuditingEntity<Long> {
       .publicId(order.getPublicId().value())
       .status(order.getStatus())
       .stripeSessionId(order.getStripeId())
+      .paymentMethod(order.getPaymentMethod())
+      .mpesaCheckoutRequestId(order.getMpesaCheckoutRequestId())
+      .mpesaReceiptNumber(order.getMpesaReceiptNumber())
+      .mpesaPhoneNumber(order.getMpesaPhoneNumber())
       .orderedProducts(orderedProductEntities)
       .user(UserEntity.from(order.getUser()))
       .build();
@@ -74,6 +98,10 @@ public class OrderEntity extends AbstractAuditingEntity<Long> {
       .publicId(new PublicId(orderEntity.getPublicId()))
       .status(orderEntity.getStatus())
       .stripeId(orderEntity.getStripeSessionId())
+      .paymentMethod(orderEntity.getPaymentMethod())
+      .mpesaCheckoutRequestId(orderEntity.getMpesaCheckoutRequestId())
+      .mpesaReceiptNumber(orderEntity.getMpesaReceiptNumber())
+      .mpesaPhoneNumber(orderEntity.getMpesaPhoneNumber())
       .user(UserEntity.toDomain(orderEntity.getUser()))
       .orderedProducts(orderedProducts.stream().toList())
       .build();
@@ -110,6 +138,38 @@ public class OrderEntity extends AbstractAuditingEntity<Long> {
 
   public void setStripeSessionId(String stripeSessionId) {
     this.stripeSessionId = stripeSessionId;
+  }
+
+  public PaymentMethod getPaymentMethod() {
+    return paymentMethod;
+  }
+
+  public void setPaymentMethod(PaymentMethod paymentMethod) {
+    this.paymentMethod = paymentMethod;
+  }
+
+  public String getMpesaCheckoutRequestId() {
+    return mpesaCheckoutRequestId;
+  }
+
+  public void setMpesaCheckoutRequestId(String mpesaCheckoutRequestId) {
+    this.mpesaCheckoutRequestId = mpesaCheckoutRequestId;
+  }
+
+  public String getMpesaReceiptNumber() {
+    return mpesaReceiptNumber;
+  }
+
+  public void setMpesaReceiptNumber(String mpesaReceiptNumber) {
+    this.mpesaReceiptNumber = mpesaReceiptNumber;
+  }
+
+  public String getMpesaPhoneNumber() {
+    return mpesaPhoneNumber;
+  }
+
+  public void setMpesaPhoneNumber(String mpesaPhoneNumber) {
+    this.mpesaPhoneNumber = mpesaPhoneNumber;
   }
 
   public Set<OrderedProductEntity> getOrderedProducts() {

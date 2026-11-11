@@ -17,7 +17,16 @@ public interface JpaOrderRepository extends JpaRepository<OrderEntity, Long> {
   @Query("UPDATE OrderEntity  order SET order.status = :orderStatus WHERE order.publicId = :orderPublicId")
   void updateStatusByPublicId(OrderStatus orderStatus, UUID orderPublicId);
 
+  @Modifying
+  @Query("UPDATE OrderEntity order SET order.status = :newStatus, order.mpesaReceiptNumber = :receiptNumber " +
+    "WHERE order.publicId = :orderPublicId AND order.status = :expectedStatus")
+  int updateStatusIfCurrent(UUID orderPublicId, OrderStatus expectedStatus, OrderStatus newStatus, String receiptNumber);
+
   Optional<OrderEntity> findByStripeSessionId(String stripeSessionId);
+
+  Optional<OrderEntity> findByMpesaCheckoutRequestId(String mpesaCheckoutRequestId);
+
+  Optional<OrderEntity> findByPublicIdAndUserPublicId(UUID publicId, UUID userPublicId);
 
   Page<OrderEntity> findAllByUserPublicId(UUID userPublicId, Pageable pageable);
 

@@ -10,6 +10,10 @@ import com.ndegwacodes.ecom.order.application.OrderApplicationService;
 import com.ndegwacodes.ecom.order.domain.order.CartPaymentException;
 import com.ndegwacodes.ecom.order.domain.order.aggregate.*;
 import com.ndegwacodes.ecom.order.domain.order.vo.StripeSessionId;
+import com.ndegwacodes.ecom.order.infrastructure.secondary.service.mpesa.Daraja;
+import com.ndegwacodes.ecom.order.infrastructure.secondary.service.mpesa.MpesaPaymentException;
+import com.ndegwacodes.ecom.order.infrastructure.secondary.service.mpesa.MpesaService;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.ndegwacodes.ecom.order.domain.user.vo.*;
 import com.ndegwacodes.ecom.product.domain.vo.PublicId;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +25,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,12 +36,50 @@ import static com.ndegwacodes.ecom.product.infrastructure.primary.ProductsAdminR
 public class OrderResource {
 
   private final OrderApplicationService orderApplicationService;
+  private final MpesaService mpesaService;
 
   @Value("${application.stripe.webhook-secret}")
   private String webhookSecret;
 
-  public OrderResource(OrderApplicationService orderApplicationService) {
+  public OrderResource(OrderApplicationService orderApplicationService, MpesaService mpesaService) {
     this.orderApplicationService = orderApplicationService;
+    this.mpesaService = mpesaService;
+  }
+
+  @PostMapping("/mpesa")
+  public ResponseEntity<?> payWithMpesa(@RequestBody RestMpesaCheckoutRequest request) {
+    try {
+      PublicId orderPublicId = orderApplicationService.startMpesaCheckout(
+        RestCartItemRequest.to(request.items() == null ? List.of() : request.items()), request.phoneNumber());
+      return ResponseEntity.status(201).body(Map.of("orderPublicId", orderPublicId.value()));
+    } catch (MpesaPaymentException e) {
+      return ResponseEntity.status(e.getReason().httpStatus()).body(Map.of("message", e.getMessage()));
+    }
+  }
+
+  @GetMapping("/mpesa/{orderPublicId}")
+  public ResponseEntity<?> getMpesaOrderStatus(@PathVariable UUID orderPublicId) {
+    try {
+      Order order = orderApplicationService.getMpesaOrder(new PublicId(orderPublicId));
+      return ResponseEntity.ok(RestMpesaOrderStatus.from(order));
+    } catch (MpesaPaymentException e) {
+      return ResponseEntity.status(404).body(Map.of("message", e.getMessage()));
+    }
+  }
+
+  @PostMapping("/mpesa/callback/{token}")
+  public ResponseEntity<Map<String, Object>> mpesaCallback(@PathVariable String token,
+                                                           @RequestBody JsonNode body) {
+    if (!mpesaService.isValidCallbackToken(token)) {
+      return ResponseEntity.notFound().build();
+    }
+    return Daraja.parseCallback(body)
+      .map(result -> {
+        orderApplicationService.handleMpesaResult(result);
+        return ResponseEntity.ok(Map.<String, Object>of("ResultCode", 0, "ResultDesc", "Accepted"));
+      })
+      .orElseGet(() -> ResponseEntity.badRequest()
+        .body(Map.of("ResultCode", 1, "ResultDesc", "Malformed callback")));
   }
 
   @GetMapping("/get-cart-details")

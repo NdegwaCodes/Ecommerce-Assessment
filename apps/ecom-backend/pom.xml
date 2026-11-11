@@ -12,7 +12,7 @@
 	<artifactId>ecom</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ecom-backend</name>
-	<description>E-commerce backend: products, cart, Stripe checkout and orders</description>
+	<description>Mwangaza Solar API: solar catalogue, cart, M-Pesa and Stripe checkout, orders</description>
 	<url/>
 	<licenses>
 		<license/>
