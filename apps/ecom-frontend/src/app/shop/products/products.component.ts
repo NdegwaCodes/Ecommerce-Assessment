@@ -2,6 +2,7 @@ import { Component, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductsFilterComponent } from './products-filter/products-filter.component';
 import { injectQueryParams } from 'ngxtension/inject-query-params';
+import { ProductFilter } from '../../admin/model/product.model';
 import { UserProductService } from '../../shared/service/user-product.service';
 import { Router } from '@angular/router';
 import { ToastService } from '../../shared/toast/toast.service';
@@ -9,7 +10,6 @@ import { Pagination } from '../../shared/model/request.model';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { filter, lastValueFrom } from 'rxjs';
 import { ProductCardComponent } from '../product-card/product-card.component';
-import { ProductFilter } from '../../admin/model/product.model';
 
 @Component({
   selector: 'ecom-products',
