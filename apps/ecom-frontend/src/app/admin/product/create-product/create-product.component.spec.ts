@@ -1,3 +1,4 @@
+import { testProviders } from '../../../../testing/test-providers';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CreateProductComponent } from './create-product.component';
 
@@ -8,6 +9,7 @@ describe('CreateProductComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CreateProductComponent],
+      providers: testProviders,
     }).compileComponents();
 
     fixture = TestBed.createComponent(CreateProductComponent);

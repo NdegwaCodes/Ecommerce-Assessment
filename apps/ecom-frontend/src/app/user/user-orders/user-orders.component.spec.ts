@@ -1,3 +1,4 @@
+import { testProviders } from '../../../testing/test-providers';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserOrdersComponent } from './user-orders.component';
 
@@ -8,6 +9,7 @@ describe('UserOrdersComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [UserOrdersComponent],
+      providers: testProviders,
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserOrdersComponent);

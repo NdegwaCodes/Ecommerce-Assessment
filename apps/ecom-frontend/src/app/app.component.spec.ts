@@ -1,26 +1,21 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { RouterModule } from '@angular/router';
+import { testProviders } from '../testing/test-providers';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent, RouterModule.forRoot([])],
+      imports: [AppComponent],
+      providers: testProviders,
     }).compileComponents();
   });
 
-  it('should render title', () => {
+  it('renders the navbar, the routed page and the footer', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain(
-      'Welcome Ecommerce Assessment'
-    );
-  });
-
-  it(`should have as title 'Ecommerce Assessment'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('Ecommerce Assessment');
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.querySelector('ecom-navbar')).not.toBeNull();
+    expect(element.querySelector('router-outlet')).not.toBeNull();
+    expect(element.querySelector('ecom-footer')).not.toBeNull();
   });
 });

@@ -1,3 +1,4 @@
+import { testProviders } from '../../../../testing/test-providers';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CreateCategoryComponent } from './create-category.component';
 
@@ -8,6 +9,7 @@ describe('CreateCategoryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CreateCategoryComponent],
+      providers: testProviders,
     }).compileComponents();
 
     fixture = TestBed.createComponent(CreateCategoryComponent);
